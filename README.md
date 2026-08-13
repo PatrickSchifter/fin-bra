@@ -247,6 +247,44 @@ mais útil para ajudar. Um layout novo é uma função em `lib/fatura.mjs` e uma
 A categorização automática é um chute pelo nome do estabelecimento, para você não categorizar
 80 itens na mão: confira e corrija o que errar.
 
+### Dica: a senha do PDF num arquivo, para o agente não te interromper
+
+Quase toda fatura vem com senha, e cada banco usa uma regra diferente — CPF inteiro, quatro
+primeiros dígitos, data de nascimento, nenhuma. Sem isso registrado em algum lugar, todo mês
+o agente para no meio e pergunta, ou você digita o `pdftotext` na mão.
+
+Anote a regra num `faturas/CREDENCIAIS.md`. A pasta `faturas/` **já está no `.gitignore`**,
+então o arquivo nasce fora do git:
+
+```markdown
+# Credenciais — dados pessoais (NÃO versionar)
+
+Este arquivo fica em `faturas/`, que está no `.gitignore`. Nunca copie o conteúdo
+daqui para CLAUDE.md, README, commits ou qualquer arquivo versionado.
+
+- **Fatura Banco A (PDF):** senha = CPF, sem pontos nem traços → `00000000000`
+- **Fatura Banco B (PDF):** senha = 4 primeiros dígitos do CPF → `0000`
+- **Fatura Banco C (PDF):** sem senha
+```
+
+O `CLAUDE.md` manda o agente ler esse arquivo quando existir, então "importa a fatura da
+Caixa que eu baixei" passa a rodar do PDF ao lançamento sem parada.
+
+Duas coisas que valem a consciência antes de criar o arquivo. Primeira: é senha em texto
+puro no disco, e junto com o PDF que ela abre — quem tiver acesso à sua máquina tem os dois.
+Vale para faturas, não para o que der prejuízo se vazar (senha de banco, cartão, token). Se
+preferir não ter o arquivo, é só não criar: o agente pergunta a senha quando precisar, ou
+você roda o `pdftotext` e entrega o `.txt`, que já sai sem senha nenhuma.
+
+Segunda: confirme o `.gitignore` antes de escrever qualquer coisa nele.
+
+```bash
+git check-ignore -v faturas/CREDENCIAIS.md    # tem que responder .gitignore:faturas/
+```
+
+Se um dia comitar sem querer, apagar num commit novo não resolve: o conteúdo continua no
+histórico e, se você já deu push, considere a senha vazada e troque o que der para trocar.
+
 ## Painel
 
 ```bash

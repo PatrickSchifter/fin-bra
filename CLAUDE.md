@@ -101,6 +101,13 @@ node fin.mjs add --json "$(cat lote.json)"
 `--layout` é o banco que imprimiu (`santander` | `porto` | `caixa`); `--card` é o `method`
 no banco de dados. São coisas diferentes: dois cartões Porto = dois `--card`, um `--layout`.
 
+A senha do PDF pode estar em `faturas/CREDENCIAIS.md` (fora do git). **Leia esse arquivo
+antes de pedir a senha ao usuário** — é o que faz a importação rodar do PDF ao lançamento sem
+parar. Se não existir, ou se o banco não estiver lá, aí sim pergunte; não invente senha nem
+tente adivinhar a regra. O conteúdo dele **nunca** sai desse arquivo: não repita a senha na
+resposta, não escreva em `CLAUDE.md`/`README`/commit, não passe em comando que fique no
+histórico do shell além do `pdftotext` da vez.
+
 **Sempre confira o total do parser contra o total de compras impresso na fatura antes de
 importar.** Santander: "Total de Despesas". Caixa: "Total final" de cada cartão. Porto: soma
 dos "Lançamentos no cartão" com o "Total lançamentos internacionais". **Não confira contra o
