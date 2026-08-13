@@ -16,6 +16,20 @@ O `.claude/settings.json` do projeto já libera consulta, `add`, `ok` e `roll` s
 permissão. `del`, `edit` e `init` ficam fora da allowlist de propósito — eles reescrevem
 histórico e o usuário quer ser perguntado. Não contorne isso via `q` ou `psql`.
 
+## Configuração (`.env`)
+
+Só `DATABASE_URL` é obrigatória; o resto tem default. O arquivo **não é versionado** — se ele
+não existir, o erro já diz o que fazer, então não invente conexão nem crie `.env` sem pedir.
+Variável de ambiente tem precedência sobre o arquivo.
+
+| Variável | Default | Para que serve |
+|---|---|---|
+| `DATABASE_URL` | — | **Obrigatória.** Procurada no ambiente e, se ausente, no `.env` da raiz. |
+| `DATABASE_SSL` | decidido pelo host | `disable` \| `no-verify` \| `require`. Remoto liga TLS, `localhost` desliga; isto força. |
+| `PORT` | `4173` | Porta do painel. |
+| `HOST` | `127.0.0.1` | Interface do painel. **Não mude para `0.0.0.0`** — o painel não tem autenticação. |
+| `CONTA_METHOD` | `conta` | Qual `method` é movimento de conta corrente (não cartão). Alimenta o aviso de "mês incompleto" do painel. |
+
 ## Modelo de dados
 
 `tx(id, kind expense|income, amount, category, description, occurred_on, method, recurring, due_day, series, pending, notes)`

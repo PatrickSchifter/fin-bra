@@ -100,6 +100,41 @@ docker run --name fin-pg -e POSTGRES_PASSWORD=senha -p 5432:5432 -d postgres
 Serve qualquer Postgres gerenciado (Neon, Supabase, RDS). SSL liga sozinho para host remoto
 e desliga para `localhost` — não precisa configurar.
 
+### Configuração: o `.env`
+
+Só a primeira linha é obrigatória. O resto tem default e só existe para quando o default não
+serve. Qualquer uma delas também funciona como variável de ambiente
+(`PORT=8080 node painel.mjs`), que tem precedência sobre o arquivo.
+
+```bash
+# obrigatório — string de conexão do seu Postgres
+DATABASE_URL=postgres://usuario:senha@host:5432/banco
+```
+
+| Variável | Default | Para que serve |
+|---|---|---|
+| `DATABASE_URL` | — | **Obrigatória.** Onde o dado mora. O CLI a procura no ambiente e, se não achar, no `.env` da pasta do projeto. |
+| `DATABASE_SSL` | decidido pelo host | Força a decisão de TLS: `disable`, `no-verify` ou `require`. Só precisa se o palpite automático errar (ex.: Postgres remoto com certificado self-signed → `no-verify`). |
+| `PORT` | `4173` | Porta do painel. |
+| `HOST` | `127.0.0.1` | Interface do painel. **Só mude sabendo que o painel não tem autenticação** — em `0.0.0.0` qualquer um na sua rede lê seu extrato inteiro. |
+| `CONTA_METHOD` | `conta` | Qual `method` você usa para movimento de conta corrente (o seu pode ser `nubank-conta`, `itau-conta`…). O painel usa isso para separar movimento de conta de compra no cartão ao avisar que o mês está incompleto. Se estiver errado, o aviso erra. |
+
+O `.env` **nunca é versionado** — já está no `.gitignore`, junto com `faturas/`, PDFs, CSVs,
+OFX e `ESTADO.md`. Veja [`.env.example`](.env.example) para copiar e preencher.
+
+Sem `DATABASE_URL` o CLI não adivinha nada: falha na hora dizendo o que fazer (e `fin help`
+continua funcionando, para você não ficar sem saída).
+
+```
+$ fin saldo
+erro: DATABASE_URL não definida.
+
+  cp .env.example .env    # e coloque a string de conexão do seu Postgres
+
+Postgres local:  postgres://user:senha@localhost:5432/fin
+Neon / Supabase: pegue a connection string no painel do serviço
+```
+
 Para chamar de `fin` em vez de `node fin.mjs`:
 
 ```bash

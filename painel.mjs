@@ -8,7 +8,13 @@ import http from 'node:http';
 import { criarPool } from './lib/db.mjs';
 import { isoLocal } from './lib/helpers.mjs';
 
-const pool = criarPool();
+let pool;
+try {
+  pool = criarPool();
+} catch (e) {
+  console.error('erro:', e.message);
+  process.exit(1);
+}
 
 const PORT = Number(process.env.PORT) || 4173;
 const HOST = process.env.HOST || '127.0.0.1';

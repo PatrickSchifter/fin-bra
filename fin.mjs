@@ -10,8 +10,11 @@ import {
 } from './lib/helpers.mjs';
 
 const root = dirname(fileURLToPath(import.meta.url));
-const pool = criarPool();
-const q = (text, params) => pool.query(text, params);
+
+// pool preguiçoso: criar no topo do módulo jogaria o erro de DATABASE_URL fora do try/catch
+// lá embaixo, e quem acabou de clonar o projeto receberia um stack trace em vez da instrução
+let pool;
+const q = (text, params) => (pool ??= criarPool()).query(text, params);
 
 const argv = process.argv.slice(2);
 const cmd = argv.shift();
