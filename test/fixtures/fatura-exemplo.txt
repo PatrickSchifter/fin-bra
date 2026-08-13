@@ -1,0 +1,29 @@
+                       BANCO EXEMPLO S.A. - CARTAO DE CREDITO
+                       Fatura de AGOSTO/2026        Vencimento 12/08/2026
+
+  Titular: FULANO DE TAL                            Final do cartao 1234
+
+
+  Data      Descricao                                     Valor R$
+
+  05/07     PAGAMENTO DE FATURA                          -1.234,56
+  14/07     IFD*IFOOD                                        48,90
+  15/07     SUPERMERCADO EXEMPLO                            312,45
+  16/07     NETFLIX.COM                                      39,90
+  17/07     LOJA DE MOVEIS EXEMPLO           03/10           189,90
+  18/07     AUTO POSTO EXEMPLO                              200,00
+  19/07     DROGARIA EXEMPLO                                 67,80
+  20/07     UBER   *TRIP                                      23,45
+  21/07     SHOPEE  *COMPRA                                   99,00
+  22/07     PADARIA EXEMPLO                                   18,50
+  23/07     CINEMARK EXEMPLO                                  64,00
+  24/07     ESTORNO LOJA EXEMPLO                            -50,00
+  25/07     ESTABELECIMENTO SEM CATEGORIA                    12,34
+  26/07     NOTEBOOK EXEMPLO                 01/12           416,58
+
+  IOF DESPESA NO EXTERIOR                                     0,93
+  ANUIDADE DIFERENCIADA PARC 02/12                           29,90
+
+            SALDO ANTERIOR                                1.234,56
+            TOTAL DE DESPESAS                             1.523,65
+            LIMITE DISPONIVEL                             4.000,00

@@ -1,0 +1,12 @@
+node_modules/
+.env
+.env.local
+
+# Faturas e extratos: dados pessoais, nunca versione.
+faturas/
+*.pdf
+*.ofx
+*.csv
+lote.json
+
+.DS_Store

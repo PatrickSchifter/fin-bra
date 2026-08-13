@@ -1,0 +1,163 @@
+# fin-bra
+
+> Personal-finance CLI built around how people actually spend money in Brazil: credit-card
+> statements imported line by line, `parcelas`, monthly recurring bills and a cash-flow
+> projection. Postgres, no build step, one dependency. **Docs and CLI are in Portuguese.**
+
+CLI de finanças pessoais que não tenta ser um app de banco. Você lança no terminal, o dado
+mora num Postgres **seu**, e nada sai da sua máquina.
+
+```
+$ fin add 35,90 mercado pão e leite
+id  kind     amount  category  description    date
+--  -------  ------  --------  -------------  ----------
+41  expense  35.90   mercado   pão e leite    2026-08-13
+
+$ fin saldo
+conta       amount   data
+----------  -------  ----------
+principal   2840.15  2026-08-12
+
+saldo        2840.15
++ entradas    500.00   previstas até o fim do mês
+− saídas      612.30   previstas até o fim do mês
+− faturas    1180.44   cartões a vencer
+= projeção   1547.41
+```
+
+## Por que não lançar "Nubank 3.200" e pronto
+
+Porque aí você não sabe onde o dinheiro foi. O ponto do `fin-bra` é o oposto: a fatura entra
+**item a item**, cada compra com sua categoria e sua data real. É assim que aparece que o
+delivery virou o terceiro maior gasto do mês.
+
+Três decisões que vêm daí e que explicam o resto do sistema:
+
+- **Compra à vista usa a data da compra; parcela usa o vencimento da fatura.** Uma fatura cai
+  em dois meses no banco. É de propósito: mostra quando você gastou, não quando o banco cobrou.
+- **A fatura nunca vira lançamento.** As compras já estão lá. A fatura é evento de *caixa* e
+  mora na tabela própria; lançá-la de novo dobraria a despesa. Pagar a fatura é transferência,
+  não gasto.
+- **Previsto e realizado nunca somam num número só.** `sum` mostra as duas linhas separadas.
+  Previsão que se disfarça de fato é como se erra o mês inteiro.
+
+## Instalação
+
+Precisa de Node 20+ e um Postgres.
+
+```bash
+git clone https://github.com/PatrickSchifter/fin-bra.git
+cd fin-bra
+npm install
+cp .env.example .env      # coloque sua DATABASE_URL
+node fin.mjs init         # cria o schema  (ATENÇÃO: apaga tudo que existir)
+node fin.mjs add 35,90 mercado pão
+```
+
+Postgres local em um comando:
+
+```bash
+docker run --name fin-pg -e POSTGRES_PASSWORD=senha -p 5432:5432 -d postgres
+# DATABASE_URL=postgres://postgres:senha@localhost:5432/postgres
+```
+
+Serve qualquer Postgres gerenciado (Neon, Supabase, RDS). SSL liga sozinho para host remoto
+e desliga para `localhost` — não precisa configurar.
+
+Para chamar de `fin` em vez de `node fin.mjs`:
+
+```bash
+npm link      # ou: npm install -g .
+fin saldo
+```
+
+## Comandos
+
+```
+fin add <valor> <categoria> [descrição]   # --date 05/08|hoje|-2  --kind income  --method pix
+                                          # --recurring --due 7 --series vivo  --notes ".."
+fin add --json '[{"amount":..,"category":"..","date":".."}]'   # lote
+fin list        # --month 2026-08|-1  --from --to  --cat x  --kind  --search termo  --limit 30
+fin sum         # --month|--year 2026|--all   --by category|method|kind|month
+fin edit <id>   # --amount --cat --desc --date --kind --method --notes --recurring --due --series
+fin del <id> [id...]
+fin roll        # materializa os recorrentes do mês como previstos  [--month] [--dry]
+fin ok <id>     # previsto -> realizado  [--date] [--amount]
+fin pend        # o que está previsto e não confirmou
+fin due         # recorrentes do mês: PENDENTE | PREVISTO | lançado | fatura <cartao>
+fin saldo       # saldo <valor> registra | sem args mostra atual + projeção
+fin fatura      # fatura <cartao> <valor> --venc <data> [--pago] | fatura pago <cartao> <data>
+fin cats
+fin budget      # status do mês | budget set <cat> <valor> | budget del <id>
+fin q "SELECT ..."   # consulta ad-hoc, read-only
+```
+
+Qualquer comando aceita `--json`. Valores aceitam `35,90`, `1.200,50`, `R$ 1200`.
+Categorias são texto livre em minúsculas — não existe lista fixa.
+
+### Recorrentes
+
+Todo recorrente precisa de `--series`, uma chave estável:
+
+```bash
+fin add 99,90 internet "Fibra 600MB" --recurring --due 15 --series vivo
+```
+
+A descrição muda todo mês ("Geladeira parcela 19/36") e a categoria agrupa demais (`assinaturas`
+tem vários), então é a `series` que identifica. Sem ela, `due` e `roll` erram.
+
+No começo do mês, `fin roll` cria os previstos (é idempotente: pula o que já existe e para
+quando as parcelas acabam). Quando o dinheiro sai de verdade, `fin ok <id>`.
+
+Recorrente cobrado no cartão leva `--method <nome-do-cartao>`. Aí o `roll` pula ele: a cobrança
+vai chegar na fatura e entrar item a item na importação. Criar previsto duplicaria.
+
+## Importar fatura de cartão
+
+```bash
+pdftotext -upw <senha> -layout fatura.pdf fatura.txt
+node parse-fatura.mjs fatura.txt --card santander --venc 2026-08-12 --dry   # confere
+node parse-fatura.mjs fatura.txt --card santander --venc 2026-08-12 > lote.json
+fin add --json "$(cat lote.json)"
+fin fatura santander 1180,44 --venc 2026-08-12      # o total, para a projeção de caixa
+```
+
+**Sempre compare o total do `--dry` com o "Total Despesas" impresso na fatura antes de
+importar.** Se não bater, o regex não pegou tudo.
+
+O parser hoje entende o **layout de 2 colunas do Santander**. Outros bancos imprimem
+diferente — [contribuições são bem-vindas](CONTRIBUTING.md), é o lugar mais útil para ajudar.
+A categorização automática é um chute pelo nome do estabelecimento, para você não categorizar
+80 itens na mão: confira e corrija o que errar.
+
+## Painel
+
+```bash
+node painel.mjs     # http://127.0.0.1:4173
+```
+
+Renderizado no servidor, sem build e sem CDN. `/dados.json` devolve o mesmo payload em JSON.
+
+**Não tem autenticação** — entrega o extrato inteiro para quem abrir. Por isso escuta só em
+`127.0.0.1`. Se mudar o `HOST`, ponha algo com senha na frente.
+
+O painel avisa quando o mês está incompleto, comparando a última compra de cartão com hoje.
+Sem esse aviso o mês corrente sempre parece bom — só falta a fatura chegar.
+
+## Privacidade
+
+Não tem servidor, telemetria nem conta. O banco é seu. O `.gitignore` já bloqueia `.env`,
+`faturas/`, PDFs, CSVs e OFX — **confira antes do primeiro commit se você versionar o seu fork**.
+
+## Desenvolvimento
+
+```bash
+npm test     # node --test, sem framework e sem banco
+```
+
+As funções puras (dinheiro, data, parcela, parser de fatura) vivem em `lib/` justamente para
+serem testáveis sem Postgres. Veja [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Licença
+
+[MIT](LICENSE)

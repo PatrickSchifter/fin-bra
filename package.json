@@ -1,0 +1,48 @@
+{
+  "name": "fin-bra",
+  "version": "0.1.0",
+  "description": "CLI de finanças pessoais para o jeito brasileiro de gastar: fatura de cartão item a item, parcelas, recorrentes e projeção de saldo. Postgres, sem build, uma dependência.",
+  "keywords": [
+    "financas",
+    "finance",
+    "cli",
+    "postgres",
+    "brasil",
+    "orcamento",
+    "budget",
+    "fatura",
+    "cartao-de-credito"
+  ],
+  "license": "MIT",
+  "author": "Patrick Schifter",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PatrickSchifter/fin-bra.git"
+  },
+  "bugs": {
+    "url": "https://github.com/PatrickSchifter/fin-bra/issues"
+  },
+  "homepage": "https://github.com/PatrickSchifter/fin-bra#readme",
+  "type": "module",
+  "bin": {
+    "fin": "./fin.mjs",
+    "fin-painel": "./painel.mjs"
+  },
+  "files": [
+    "fin.mjs",
+    "painel.mjs",
+    "parse-fatura.mjs",
+    "schema.sql",
+    "lib/"
+  ],
+  "scripts": {
+    "test": "node --test \"test/*.test.mjs\"",
+    "painel": "node painel.mjs"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "pg": "^8.22.0"
+  }
+}
