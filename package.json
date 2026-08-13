@@ -36,7 +36,7 @@
     "lib/"
   ],
   "scripts": {
-    "test": "node --test \"test/*.test.mjs\"",
+    "test": "node --test",
     "painel": "node painel.mjs"
   },
   "engines": {
