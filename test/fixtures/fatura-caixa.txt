@@ -1,0 +1,71 @@
+0000.XXXX.XXXX.1234
+
+                                                                                                                                                                                                            VENCIMENTO
+                               FULANO DE TAL                                                                                                                                                                  11/08/2026
+                               R EXEMPLO 100
+                               BAIRRO EXEMPLO                                                                                                          VALOR TOTAL DESTA FATURA
+                               00000000 CIDADE UF
+                                                                                                                                                                                   R$ 275,48
+                                                                                                                                             Limite Total -----------------------------                                     R$ 3.000,00
+
+                                                                                             Opções para pagamento
+                     TOTAL                                                                                                                       MÍNIMO**
+                R$ 275,48                             Melhor opção, aqui você                                                                         R$ 41,32
+                                                      não paga juros!
+
+              Qtd                                         Demais              Juros Efetivos %                                Total das
+                                1ª Parcela                                                             CET % a.a.                                                                   Total da Fatura / %                      IOF / %
+            Parcelas                                      Parcelas               a.m. / a.a.                                parcelas + IOF
+                2X               R$ 144,53                R$ 143,15           8,19%/157,18%             179,79%               R$ 287,68                R$ 276,86/100,00%             R$ 275,48/99,50%                    R$ 1,38/0,50%
+                4X               R$ 79,25                 R$ 77,19            8,19%/157,18%             179,79%               R$ 310,82                R$ 277,53/100,00%             R$ 275,48/99,26%                    R$ 2,05/0,74%
+
+Pagador:     sacado                                                                                                                                                                                          CPF/CNPJ do Pagador:
+Nosso Número                                                     Nº do Documento                                         Vencimento                       Valor do Documento                                Valor Cobrado
+   10000000000000000-0                                                                00000000000                                 11/08/2026                                   275,48
+
+                                                                                                   Demonstrativo
+                                                                                                   Data       Descrição                             Cidade/País             Valor U$$             Crédito/Débito
+
+                                                                                                                                                    Valor Original           Cotação
+                                                                                                   01/07      TOTAL DA FATURA ANTERIOR                                                                     275,50D
+                                                                                                   13/07      OBRIGADO PELO PAGAMENTO                                                                      275,50C
+
+                         Guia de Consumo                                                           13/07
+                                                                                                   28/07
+                                                                                                              AJUSTE CRED PARC S/ JUROS
+                                                                                                              AJUSTE CREDITO PARC. LOJISTAA
+                                                                                                                                                                                                             0,10C
+                                                                                                                                                                                                             0,02C
+
+                                                                                                   Total                                                                                                    0,12 C
+
+
+                                                                                                   FULANO DE TAL (Cartão 1234)
+                                                                                                   ANUIDADE
+                                                                                                                                                                                              Crédito/Débito R$
+                                                                                                   ISENTO                                                                                                    0,00D
+
+                                                                                                   Total final (cartão 1234)                                                                                 0,00D
+
+
+
+                                                                                                   FULANO DE TAL (Cartão 5678)
+                                                                                                   COMPRAS PARCELADAS (Cartão 5678)
+                                                                                                     Data     Descrição                             Cidade/País             Valor U$$             Crédito/Débito
+                                                                                                      27/08   EC *LOJA EXEMPLO       12 DE 12       CIDADE EX                                               210,40D
+                                                                                                      10/09   MP*MERCADO EXEMPLO 11 DE              OUTRA CID                                               65,20D
+                                                                                                              11
+
+
+                                                                                                   Total COMPRAS PARCELADAS                                                                               275,60D
+                                                                                                   Total final (cartão 5678)                                                                              275,60D
+
+
+Encargos                                                                                                                       Valor total desta fatura R$ 275,48 D
+Abaixo, estão as taxas de juros cobradas por diversos serviços incluídos neste cartão de
+crédito.
+
+MULTA                                                                                      2,00%
+MORA                                                              12,68% a.a        1,00% a.m
+PARCELADO COM JUROS                                               80,20% a.a        5,03% a.m
+ROTATIVO                          301,45% a.a       12,28% a.m   396,18% a.a      14,28% a.m

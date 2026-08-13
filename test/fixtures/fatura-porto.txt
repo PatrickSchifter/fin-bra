@@ -1,0 +1,81 @@
+                                                     Fulano de Tal
+                                                     Cartão 0000 00** **** *901
+
+
+
+                   Esta fatura vence em
+                   01/08/2026
+                   O valor total é
+                   R$ 1.005,10
+
+              Confira outras opções de pagamento
+
+          Pagamento mínimo de
+
+          R$ 288,00
+
+
+          Parcelamento
+            com seguro
+                                                       18x de R$ 155,00
+                                                                                    Total: R$ 2.790,00
+
+          Parcelamento
+            sem seguro
+                                                      18x de R$ 148,00
+                                                                                  Total: R$ 2.664,00
+
+   Limite total de crédito                                                          R$ 2.500,00
+   Limite de saque                                                                            R$ 250,00
+
+Total de despesas parceladas: próximas faturas
+Setembro                                                                                              R$                          0,00
+Outubro                                                                                               R$                          0,00
+Previsão de fechamento da próxima fatura                                                              25/08/2026
+
+Detalhamento
+da fatura
+Lançamentos: compras e saques
+Fulano de Tal (final *901)
+Data               Estabelecimento                                                                                  Valor em R$
+
+25/06              ANUIDADE DIFERENCIADA 10/12                                                                                     29,00
+01/07              PAGAMENTO PIX                                                                                             -1.500,00
+03/07              DescPostoExemploShellBox                                                                                          -3,10
+03/07              PostoExemploShellBox                                                                                             118,20
+27/07              IOF TRANSACOES INTERNACIONAIS                                                                                    21,40
+27/07              CARTAO PROTEGIDO                                                                                                 16,50
+Lançamentos no cartão (final *901)                                                                                                185,10
+
+
+Lançamentos: compras e saques
+Fulano de Tal (final *902)
+Data               Estabelecimento                                                                                  Valor em R$
+
+26/06              SEGURADORA EXEMPLO Seg SAO PAULO B                                                                             142,80
+04/07              EC MELIMAIS OSASCO BRA                                                                                          88,70
+ 11/07             Google Crunchyroll An SAO PAULO BR                                                                              27,90
+18/07              UNIMED ODONTO SAO PAULO BRA                                                                                     71,30
+Lançamentos no cartão (final *902)                                                                                                330,70
+
+
+Lançamentos Internacionais
+Fulano de Tal (final *902)
+Data               Estabelecimento                                                                           US$                      R$
+
+01/07              DIGITALOCEAN COM AMSTERDAM NH                                                               2,17                 12,40
+                   USD 2,17 (Dólar de Conversão R$ 5,7143)
+03/07              ANTHROPIC CLAUDE SUB SAN FRANCISCO                                                                             480,00
+                   BRL 480,00 (Dólar de Conversão R$ 0,0000)
+Total lançamentos internacionais em R$                                                                                            492,40
+Contestações poderão ser feitas em até 60 dias para compras nacionais e 45 para internacionais.
+
+         Detalhamento geral conforme resolução Banco Central nº 365/2023
+Pagamento mínimo                                R$ 288,00          Encargos cobrados nesta fatura:
+I - Rotativo                                         R$ 0,00       Rotativo                                                        R$ 0,00
+III - Novos lançamentos                           R$ 288,00        Compras parceladas                                              R$ 0,00
+
+Limites de crédito
+Limite total                                    R$ 2.500,00
+Utilizado                                       R$ 1.005,10
+Disponível                                        R$ 459,21

@@ -208,17 +208,42 @@ vai chegar na fatura e entrar item a item na importação. Criar previsto duplic
 
 ```bash
 pdftotext -upw <senha> -layout fatura.pdf fatura.txt
-node parse-fatura.mjs fatura.txt --card santander --venc 2026-08-12 --dry   # confere
-node parse-fatura.mjs fatura.txt --card santander --venc 2026-08-12 > lote.json
+node parse-fatura.mjs fatura.txt --layout santander --card santander --venc 2026-08-12 --dry
+node parse-fatura.mjs fatura.txt --layout santander --card santander --venc 2026-08-12 > lote.json
 fin add --json "$(cat lote.json)"
 fin fatura santander 1180,44 --venc 2026-08-12      # o total, para a projeção de caixa
 ```
 
-**Sempre compare o total do `--dry` com o "Total Despesas" impresso na fatura antes de
-importar.** Se não bater, o regex não pegou tudo.
+`--layout` é o banco que imprimiu o PDF; `--card` é o nome do `method` no seu banco de dados.
+Costumam coincidir, mas são coisas diferentes — dois cartões Porto são dois `--card` com o
+mesmo `--layout`.
 
-O parser hoje entende o **layout de 2 colunas do Santander**. Outros bancos imprimem
-diferente — [contribuições são bem-vindas](CONTRIBUTING.md), é o lugar mais útil para ajudar.
+| `--layout` | Como a fatura é lida |
+|---|---|
+| `santander` | duas colunas, `DD/MM DESCRIÇÃO [PP/NN] VALOR`. É o default. |
+| `porto` | uma seção por cartão mais a de internacionais; caixa mista e duas colunas de valor (US$ e R$, vale a segunda). |
+| `caixa` | colunas espalhadas pela página, parcela escrita `12 DE 12`, sinal no sufixo `D`/`C`. |
+
+**Sempre compare o total do `--dry` com o total de compras impresso na fatura antes de
+importar.** Se não bater, o regex não pegou tudo. Onde olhar muda por banco: no Santander é
+o "Total de Despesas"; na Caixa, o "Total final" de cada cartão; na Porto, a soma dos
+"Lançamentos no cartão" com o "Total lançamentos internacionais".
+
+Não use o valor grande da capa para essa conferência. Ele já vem líquido de estorno,
+desconto e saldo anterior, e o parser importa só as despesas — a diferença é justamente o
+que ele te mostra na linha `créditos ignorados`.
+
+**Não existe detecção automática de layout, de propósito.** Rodar o banco errado não dá
+erro: dá um resultado parcial que parece certo. Lida com o parser do Santander, uma fatura
+real da Caixa devolvia um único item — que era o *pagamento da fatura anterior*, um crédito
+lido como despesa, a centavos do total impresso. Passaria por uma
+conferência apressada. Por isso o layout é explícito, o crédito é contado à parte em vez de
+sumir calado, e nenhum lançamento encontrado é erro, não lista vazia.
+
+Seu banco não está na tabela? [Contribuições são bem-vindas](CONTRIBUTING.md) — é o lugar
+mais útil para ajudar. Um layout novo é uma função em `lib/fatura.mjs` e uma fixture em
+`test/fixtures/`, com o total conferido contra o impresso; `npm test` roda sem banco.
+
 A categorização automática é um chute pelo nome do estabelecimento, para você não categorizar
 80 itens na mão: confira e corrija o que errar.
 

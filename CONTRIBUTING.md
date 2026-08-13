@@ -20,18 +20,28 @@ o que torna possível testar.
 
 ## O jeito mais útil de ajudar: um parser de fatura novo
 
-O `parse-fatura.mjs` hoje só entende o layout de 2 colunas do Santander. Todo banco imprime
-diferente, e ninguém tem fatura de todos os bancos — por isso essa é a contribuição que mais
-rende.
+O `parse-fatura.mjs` hoje entende Santander, Porto e Caixa. Todo banco imprime diferente, e
+ninguém tem fatura de todos os bancos — por isso essa é a contribuição que mais rende.
 
 1. `pdftotext -layout` na sua fatura para ver o formato.
-2. Adicione o parser em `lib/fatura.mjs`.
-3. **Anonimize uma fatura** e coloque em `test/fixtures/`: troque nomes de estabelecimento,
+2. Adicione a função em `lib/fatura.mjs` e registre em `LAYOUTS`. Ela recebe o texto e devolve
+   lançamentos crus (`{desc, data, parcela, amount}`); data, parcela e categoria são resolvidas
+   depois, iguais para todos os bancos. **Crédito sai com valor negativo, não filtrado** — é
+   isso que separa desconto e pagamento de despesa, e o que aparece no `créditos ignorados`.
+3. Prenda a leitura às seções de lançamento se a fatura tiver simulação de parcelamento,
+   limite ou encargo soltos na página. Os layouts `porto` e `caixa` fazem isso; sem essa
+   trava, "18x de R$ 155,00" da simulação de parcelamento vira compra.
+4. **Anonimize uma fatura** e coloque em `test/fixtures/`: troque nomes de estabelecimento,
    valores e os 4 últimos dígitos do cartão por dados inventados. Mantenha o *espaçamento*
    original, que é o que o regex usa.
-4. Escreva o teste em `test/fatura.test.mjs`. O caso que não pode faltar: **o total dos itens
-   bate com o "Total de Despesas" impresso na fatura.** É a conferência que evita importar
-   torto.
+5. Escreva o teste em `test/fatura.test.mjs`. O caso que não pode faltar: **o total dos itens
+   bate com o total de compras impresso na fatura** (o de cada cartão, não o valor da capa,
+   que vem líquido de estorno e saldo anterior). É a conferência que evita importar torto.
+
+O erro que esses testes existem para pegar não é o parser que falha — é o que acerta pela
+metade. A fatura da Caixa lida com o regex do Santander devolvia um único item, que era o
+pagamento da fatura anterior — um crédito virando despesa, a centavos do total impresso.
+Por isso não há detecção automática de layout: ela transformaria esse erro em silêncio.
 
 Nunca abra PR com fatura de verdade. Se acontecer, avise — o histórico precisa ser reescrito,
 não basta apagar o arquivo num commit novo.

@@ -93,14 +93,24 @@ Qualquer comando aceita `--json` (sozinho) para saída JSON. Valores aceitam `35
 
 ```bash
 pdftotext -upw <senha> -layout fatura.pdf fatura.txt
-node parse-fatura.mjs fatura.txt --card santander --venc 2026-08-12 --dry   # confere
-node parse-fatura.mjs fatura.txt --card santander --venc 2026-08-12 > lote.json
+node parse-fatura.mjs fatura.txt --layout caixa --card caixa --venc 2026-08-11 --dry   # confere
+node parse-fatura.mjs fatura.txt --layout caixa --card caixa --venc 2026-08-11 > lote.json
 node fin.mjs add --json "$(cat lote.json)"
 ```
 
-**Sempre confira o total do parser contra o "Total Despesas" impresso na fatura antes de
-importar.** O regex é do layout Santander (2 colunas); outros bancos precisam ser lançados à
-mão ou ganhar um parser.
+`--layout` é o banco que imprimiu (`santander` | `porto` | `caixa`); `--card` é o `method`
+no banco de dados. São coisas diferentes: dois cartões Porto = dois `--card`, um `--layout`.
+
+**Sempre confira o total do parser contra o total de compras impresso na fatura antes de
+importar.** Santander: "Total de Despesas". Caixa: "Total final" de cada cartão. Porto: soma
+dos "Lançamentos no cartão" com o "Total lançamentos internacionais". **Não confira contra o
+valor da capa** — ele vem líquido de estorno, desconto e saldo anterior, e o parser importa
+só despesa; a diferença é a linha `créditos ignorados`.
+
+Não há detecção automática de layout e **não invente uma**: o layout errado não falha, devolve
+resultado parcial que parece certo. Se o usuário não disser o banco, pergunte. Banco fora
+dessa lista precisa de um layout novo em `lib/fatura.mjs` (com fixture e total conferido em
+`test/`) — não force um layout existente.
 
 ## Ao mexer no código
 
