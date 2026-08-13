@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node fin.mjs list:*)",
+      "Bash(node fin.mjs sum:*)",
+      "Bash(node fin.mjs due:*)",
+      "Bash(node fin.mjs pend:*)",
+      "Bash(node fin.mjs saldo:*)",
+      "Bash(node fin.mjs cats:*)",
+      "Bash(node fin.mjs budget:*)",
+      "Bash(node fin.mjs fatura:*)",
+      "Bash(node fin.mjs q:*)",
+      "Bash(node fin.mjs help)",
+      "Bash(node fin.mjs add:*)",
+      "Bash(node fin.mjs ok:*)",
+      "Bash(node fin.mjs roll:*)",
+      "Bash(node parse-fatura.mjs:*)",
+      "Bash(npm test:*)"
+    ]
+  }
+}

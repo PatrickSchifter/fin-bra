@@ -6,6 +6,16 @@ CLI de finanças pessoais sobre Postgres. Toda escrita passa pelo `node fin.mjs`
 Este arquivo é a instrução para agentes (Claude Code e afins). Se você é humano, o
 [README.md](README.md) é mais útil.
 
+**Economia de contexto.** A saída dos comandos é curta de propósito: `sum` resume o mês em
+~1 KB, `saldo` em menos de 300 bytes. Prefira sempre o agregado (`sum`, `due`, `saldo`,
+`budget`, `q` com `GROUP BY`) a puxar a lista crua — um banco em uso tem centenas de
+lançamentos, e despejar todos gasta o contexto sem responder melhor. `list` é para achar um
+lançamento específico, com `--search` ou `--limit`, não para ler o mês.
+
+O `.claude/settings.json` do projeto já libera consulta, `add`, `ok` e `roll` sem pedir
+permissão. `del`, `edit` e `init` ficam fora da allowlist de propósito — eles reescrevem
+histórico e o usuário quer ser perguntado. Não contorne isso via `q` ou `psql`.
+
 ## Modelo de dados
 
 `tx(id, kind expense|income, amount, category, description, occurred_on, method, recurring, due_day, series, pending, notes)`

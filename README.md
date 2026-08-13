@@ -1,8 +1,10 @@
 # fin-bra
 
-> Personal-finance CLI built around how people actually spend money in Brazil: credit-card
-> statements imported line by line, `parcelas`, monthly recurring bills and a cash-flow
-> projection. Postgres, no build step, one dependency. **Docs and CLI are in Portuguese.**
+> Personal-finance CLI for Brazil, **designed to be driven by a terminal AI agent**
+> (Claude Code, Codex, Aider…): compact output, `--json` everywhere, and a `CLAUDE.md` that
+> teaches the agent the domain rules. Credit-card statements imported line by line,
+> `parcelas`, recurring bills, cash-flow projection. Postgres, no build step, one dependency.
+> **Docs and CLI are in Portuguese.**
 
 CLI de finanças pessoais que não tenta ser um app de banco. Você lança no terminal, o dado
 mora num Postgres **seu**, e nada sai da sua máquina.
@@ -24,6 +26,40 @@ saldo        2840.15
 − faturas    1180.44   cartões a vencer
 = projeção   1547.41
 ```
+
+## Feito para você conversar com uma IA, não para decorar flag
+
+Este é o jeito principal de usar. Você não precisa saber que existe `--series` nem lembrar que
+parcela usa a data do vencimento — abra um agente de terminal na pasta do projeto e fale:
+
+> **você:** paguei 35,90 no mercado e 48 no ifood ontem
+> **agente:** `fin add --json '[{"amount":35.90,"category":"mercado",…},{"amount":48,…}]'`
+
+> **você:** dá pra pagar o notebook de 3 mil esse mês?
+> **agente:** `fin saldo` → projeção 1.547,41 no fim do mês. Não dá sem atrasar algo.
+
+> **você:** onde meu dinheiro foi em agosto?
+> **agente:** `fin sum --by category --month 2026-08`
+
+Não é acidente que funcione bem — o CLI foi construído para isso:
+
+- **`CLAUDE.md` vem no repositório.** O agente lê e já sabe as regras do domínio: que fatura
+  de cartão nunca vira lançamento, que previsto e realizado não somam, que recorrente precisa
+  de `--series`. São exatamente os erros que ele cometeria sozinho, e que fazem o número sair
+  errado sem ninguém perceber. Funciona com qualquer agente que leia instruções de projeto.
+- **A saída é curta de propósito.** O mês inteiro em `sum` custa ~1 KB; `saldo` custa menos de
+  300 bytes. Despejar os lançamentos crus de um ano custaria dezenas de KB — o contexto do
+  agente acaba e ele começa a errar. Por isso os comandos já devolvem o **agregado**, não a
+  lista.
+- **`--json` em todo comando**, para o agente encadear sem parsear tabela.
+- **`add --json` em lote:** "gastei isso, isso e aquilo" vira uma chamada só, não cinco.
+- **`q "SELECT ..."` é read-only** e recusa qualquer coisa que não seja `SELECT`/`WITH`. O
+  agente tem liberdade de fazer a pergunta que quiser sem poder estragar o seu dado.
+- **`.claude/settings.json` já vem com uma allowlist:** consulta e `add` rodam sem ficar
+  pedindo permissão a cada passo; `del`, `edit` e `init` ficam de fora **de propósito** — são
+  os que reescrevem histórico em silêncio, e você quer ser perguntado.
+
+Nada disso impede o uso na mão: os comandos abaixo funcionam iguais digitados por você.
 
 ## Por que não lançar "Nubank 3.200" e pronto
 
@@ -70,6 +106,27 @@ Para chamar de `fin` em vez de `node fin.mjs`:
 npm link      # ou: npm install -g .
 fin saldo
 ```
+
+### Usando com um agente
+
+Não tem passo de configuração: abra seu agente de terminal **dentro da pasta do projeto** e
+comece a falar. Ele lê o [`CLAUDE.md`](CLAUDE.md) sozinho e já sabe operar o CLI.
+
+```bash
+cd fin-bra
+claude          # ou codex, aider, opencode...
+```
+
+Se o seu agente lê um arquivo de instruções com outro nome (`AGENTS.md`, `.cursorrules`,
+`GEMINI.md`), aponte para o mesmo conteúdo:
+
+```bash
+ln -s CLAUDE.md AGENTS.md
+```
+
+Vale manter um `ESTADO.md` **fora do git** com o que o banco não guarda: quem é quem nos seus
+lançamentos, o que já foi decidido, o que não perguntar de novo. O agente lê junto e para de
+repetir pergunta. Não versione — é o arquivo mais pessoal que você vai ter aqui.
 
 ## Comandos
 

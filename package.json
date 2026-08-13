@@ -1,7 +1,7 @@
 {
   "name": "fin-bra",
   "version": "0.1.0",
-  "description": "CLI de finanças pessoais para o jeito brasileiro de gastar: fatura de cartão item a item, parcelas, recorrentes e projeção de saldo. Postgres, sem build, uma dependência.",
+  "description": "CLI de finanças pessoais feito para ser operado por uma IA no terminal: saída compacta, --json em todo comando e CLAUDE.md com as regras do domínio. Fatura de cartão item a item, parcelas, recorrentes e projeção de saldo. Postgres, sem build, uma dependência.",
   "keywords": [
     "financas",
     "finance",
@@ -11,7 +11,11 @@
     "orcamento",
     "budget",
     "fatura",
-    "cartao-de-credito"
+    "cartao-de-credito",
+    "ai-agent",
+    "claude-code",
+    "agent-friendly",
+    "llm"
   ],
   "license": "MIT",
   "author": "Patrick Schifter",

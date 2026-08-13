@@ -2,6 +2,9 @@ node_modules/
 .env
 .env.local
 
+# Contexto pessoal sugerido no README: quem é quem, decisões. Nunca versione.
+ESTADO.md
+
 # Faturas e extratos: dados pessoais, nunca versione.
 faturas/
 *.pdf
